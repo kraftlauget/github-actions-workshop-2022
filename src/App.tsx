@@ -1,26 +1,19 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { Box, Heading, Image, Link, Stack } from "@chakra-ui/react";
 
-function App() {
+import kraftlauget from "./kraftlauget.jpg";
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Box>
+      <Stack mt="10rem" align="center">
+        <Link href="https://kraftlauget.no/" isExternal>
+          <Image src={kraftlauget} />
+        </Link>
+        <Heading fontSize="5rem">Kraftlauget Workshop</Heading>
+      </Stack>
+    </Box>
   );
-}
+};
 
 export default App;
