@@ -1,46 +1,65 @@
-# Getting Started with Create React App
+# Github Actions workshop med Kraftlauget
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Vi ønsker dere hjertelig velkommen til vår Github Actions workshop. 
 
-## Available Scripts
 
-In the project directory, you can run:
+## Hva er Github Actions?
 
-### `yarn start`
+Det er ikke uvanlig å møte på problemer når man integrerer ny kode i et allerede eksisterende prosjekt. Dette kan være i form av merge-conflics, feilende tester, osv. Dette er problemer som ofte forsterkes ved at det er lenge siden man har integrert koden. Intuitivt sett gir dette mening; e.g. man møter sannsynligvis på flere problemer når man prøver å merge en commit på 1000 linjer som har vært innom mange filer enn når man merger en commit på 10 linjer som kun endrer på én fil.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Dette er hovedtanken bak CI/CD (Continuous integration / Continuous development). Integrer kode ofte for å minimere mengden feil (og hodepine) man møter underveis. 
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+For å gjøre denne integrasjonsprosessen enda litt enklere kan man automatisere mange av stegene som er nødvendig i en slik pipeline, f.eks testing, linting, osv. Til dette formålet bruker vi en CI/CD platform, i vårt tilfelle **Github Actions**.
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Github Actions er en tjeneste som leveres av github (gratis i open-source prosjekter), og er tilgjengelig i alle repoer på Github. Alt som trengs er en (eller flere) workflow-fil(er) hvor man definerer hva man ønsker at skal skje.
+> Workflow-filen må defineres i `.github/workflows` mappen og filen må være av typen `.yml` (YAML)
 
-### `yarn build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Eksempel på en workflow ([tilpasset fra her](https://docs.github.com/en/actions/quickstart))
+```
+ 1.    name: GitHub Actions Demo
+ 2.    on: [push]                               # <- Her defineres ønskede event-triggers
+ 3.    jobs:
+ 4.      Github-Actions-Eksempel:
+ 5.        runs-on: ubuntu-latest               # <- Hvilket OS man ønsker å kjøre kommandoene/stegene i.
+ 6.        steps:                               # <- Stegene i jobben som heter Github-Actions-Eksempel
+ 7.          - run: echo "En ${{ github.event_name }} event"
+ 8.          - run: echo "Programmet kjører virtuelt på et ${{ runner.os }} operativsystem."
+ 9.          - run: echo ""
+10.          - name: Check out repository code  # <- For å aksessere koden brukes denne Actionen.
+11.            uses: actions/checkout@v2
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+I eksemplet over kan man bli kjent med strukturen til en typisk workflow. Det kan nesten ses på som en slags punktliste med visse steg man alltid må gjennom. Noen steg er "viktigere" enn andre (konseptuelt sett). 
+- Det er for eksempel viktig å definere når du ønsker at workflowen skal kjøres (det gjøres på linje 2). 
+- Så må man definere minst en jobb. I dette tilfellet er det kun en jobb som heter Github-Actions-Eksempel, men det er ofte flere. Dersom flere er definert vil de kjøre parallelt med mindre noe annet er spesifisert ("needs" nøkkelordet).
+- Man må definere hvilket underliggende operativsystem jobben skal kjøre på. I dette tilfellet (linje 5) ubuntu-latest. Andre alternativer er feks windows-latest / macos-latest. (Ideelt sett burde man definere en spesifikk versjon)
+- Enhver jobb har flere steg. Her kan man gjøre alt fra å kjøre enkle terminalkommandoer til å kjøre store skript. Det er også her man spesifiserer hvilke actions man ønsker å bruke.
+- *Andre:* Containers & Image, Branches, Tags, Needs, [Mye mer](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions)
 
-### `yarn eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Nyttige Actions
+- Checkout
+    - "Leser" på en måte koden slik at man kan aksessere den. Nødvendig når man skal gjøre operasjoner som er avhengig av å vite hvordan koden ser ut. F.eks bygging.
+- Upload Artifacts
+    - "Lagrer" filer slik at man kan bruke de flere steder. Man kan f.eks lagre et helt bygg og bruke det i en annen jobb.
+- Download Artifacts
+    - "Laster inn" lagrede filer.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Markedplace: https://github.com/marketplace?type=actions
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Oppgaven
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Oppgaven i dag går først og fremst ut på å reparere den ødelagte bygge-pipelinen som er utdelt. Deretter vil målet være å minimere byggetiden. Gruppen som har den raskeste pipelinen innen konkurransen er over vinner premien!
+
+Viktig:
+- Det er kun det aller siste bygget/runnet som teller! Så om dere er fornøyd kan det være lurt å la ting ligge.
+- Jobb kun i deres gruppes spesifikke branch.
+- Pipelinen **må** bygge, teste og linte.
+- Alt arbeid skal foregå i .github/workflows mappen (dvs ikke lov å pirke i reactprosjektet)
+- Vinnerene er gruppen med raskest tid på leaderboardet.

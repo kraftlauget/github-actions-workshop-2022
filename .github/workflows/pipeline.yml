@@ -1,0 +1,50 @@
+name: "pipeline"
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: node
+    steps:
+      - name: Install dependencies
+        run: yarn
+
+      - name: Build react app
+        run: yarn build
+
+      - name: Build react app (redundancy is important :) )
+        run: yarn build
+
+  test:
+    needs: build
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Run jest tests
+        run: yarn tset
+
+      - name: Run important command
+        run: echo "$(git rev-parse --short HEAD)"
+
+  lint:
+    needs: test
+    runs-on: macos-10.15
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Wait for dependencies to be installed
+        run: sleep 30s
+
+      - name: Run eslint
+        run: yarn lint
