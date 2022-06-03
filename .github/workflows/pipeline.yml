@@ -86,5 +86,5 @@ jobs:
         run: |
           netlify deploy --dir=prod --prod
         env:
-          NETLIFY_SITE_ID: ${{ secrets.SITE_ID_GOES_HERE }}
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN_GOES_HERE }}
+          NETLIFY_SITE_ID: ${{ secrets.TEAM_8_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
