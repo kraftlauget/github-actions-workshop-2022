@@ -2,24 +2,6 @@ name: "pipeline"
 on: push
 
 jobs:
-  build_macos:
-    runs-on: macos-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Install dependencies
-        run: yarn
-
-      - name: Build
-        run: yarn build
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: mac-build
-          path: build/
-
   build_linux:
     runs-on: ubuntu-latest
     steps:
@@ -35,11 +17,11 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: linux-build
+          name: build
           path: build/
 
   run_tests:
-    needs: [build_macos, build_linux]
+    needs: [build_linux]
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest]
@@ -71,7 +53,7 @@ jobs:
         run: yarn lint
 
   deploy:
-    needs: [build_macos, build_linux, run_tests, run_lint]
+    needs: [build_linux, run_tests, run_lint]
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
