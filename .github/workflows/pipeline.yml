@@ -22,6 +22,7 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install project dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn --prefer-offline
 
       - name: Build
@@ -52,6 +53,7 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install project dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn --prefer-offline
 
       - name: Run tests
@@ -78,6 +80,7 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install project dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn --prefer-offline
 
       - name: Lint
