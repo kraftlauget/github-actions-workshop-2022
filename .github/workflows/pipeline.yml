@@ -19,23 +19,7 @@ jobs:
         
       - name: Run tests
         run: yarn test
-        
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: build
-          path: build/
 
-  deploy:
-    needs: [build_lint_test_linux]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: build
-          path: build/
-      
       - name: Install Netlify cli
         run: |
           npm install netlify-cli@10.1.0 -g
