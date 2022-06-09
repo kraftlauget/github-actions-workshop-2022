@@ -2,57 +2,24 @@ name: "pipeline"
 on: push
 
 jobs:
-#  build_windows:
-#    runs-on: windows-latest
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v3
-#
-#      - name: Install
-#        run: yarn install
-#
-#      - name: Build
-#        run: yarn build
-#
-#      - name: Run tests
-#        run: yarn test
-#
-#      - name: Upload artifacts
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: win-build
-#          path: build/
-#
-#  build_macos:
-#    runs-on: macos-latest
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v3
-#
-#      - name: Install
-#        run: yarn install
-#
-#      - name: Build
-#        run: yarn build
-#
-#      - name: Run tests
-#        run: yarn test
-#
-#      - name: Upload artifacts
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: mac-build
-#          path: build/
 
-  build_linux:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install
-        run: yarn install && yarn build && yarn test && yarn lint
+      - name: Lint
+        run: yarn install && yarn lint
 
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build and test
+        run: yarn install && yarn build && yarn test
 #      - name: Build
 #        run: yarn build
 
