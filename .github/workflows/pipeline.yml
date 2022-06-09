@@ -14,6 +14,12 @@ jobs:
       - name: Build
         run: yarn build
 
+      - name: Upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: build
+
  run_tests:
     needs: [build_linux]
     strategy:
@@ -51,6 +57,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build
+          path: build
 
       - name: Install Netlify cli
         run: |
