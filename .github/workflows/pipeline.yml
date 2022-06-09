@@ -34,7 +34,7 @@ jobs:
         run: yarn test
 
   deploy:
-    needs: [build_linux, run_tests, run_lint]
+    needs: [build_linux, run_tests]
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
