@@ -24,7 +24,7 @@ jobs:
     needs: [build_linux]
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest]
+        os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
@@ -34,7 +34,7 @@ jobs:
         run: yarn
 
       - name: Run tests
-        run: yarn tset
+        run: yarn test
 
   run_lint:
     runs-on: ubuntu-latest
