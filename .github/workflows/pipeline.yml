@@ -26,16 +26,6 @@ jobs:
       - name: Lint
         run: yarn lint
 
- deploy:
-    needs: [build_linux]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: build
-          path: build
-
       - name: Install Netlify cli
         run: |
           npm install netlify-cli@10.1.0 -g
@@ -43,6 +33,6 @@ jobs:
       - name: Deploy to netlify
         run: |
           netlify deploy --dir=build --prod
-        env:
-          NETLIFY_SITE_ID: ${{ secrets.TEAM_7_ID }}
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          env:
+            NETLIFY_SITE_ID: ${{ secrets.TEAM_7_ID }}
+            NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
