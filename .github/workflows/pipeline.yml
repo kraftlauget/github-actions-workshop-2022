@@ -27,11 +27,8 @@ jobs:
         os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: build
-          path: build/
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Install
         run: yarn
@@ -43,14 +40,8 @@ jobs:
     needs: [build_linux]
     runs-on: ubuntu-latest
     steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: build
-          path: build/
-
-      - name: Install
-        run: yarn
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Lint
         run: yarn lint
