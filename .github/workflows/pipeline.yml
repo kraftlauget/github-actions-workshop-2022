@@ -14,12 +14,6 @@ jobs:
       - name: Build
         run: yarn build
 
-      - name: Upload
-        uses: actions/upload-artifact@v2
-        with:
-          name: build
-          path: build
-
       - name: Run tests
         run: yarn test
 
@@ -32,7 +26,7 @@ jobs:
 
       - name: Deploy to netlify
         run: |
-          netlify deploy --dir=build --prod
+          netlify deploy --prod
           env:
             NETLIFY_SITE_ID: ${{ secrets.TEAM_7_ID }}
             NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
