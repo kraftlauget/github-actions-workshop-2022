@@ -46,7 +46,7 @@ jobs:
 
       - name: Install
         run: yarn install
-        
+
       - name: Build
         run: yarn build
 
@@ -64,7 +64,7 @@ jobs:
         run: yarn
 
       - name: Run tests
-        run: yarn tset
+        run: yarn test
 
   run_lint:
     needs: [build_windows, build_macos, build_linux]
