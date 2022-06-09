@@ -39,10 +39,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Cache
+        uses: actions/cache@v3
+        id: cache-test
+        with:
+          path: build/
+          key: ${{ hashFiles('src/') }}
+
       - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn
 
       - name: Run tests
+        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn test
 
   run_lint:
@@ -51,10 +60,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Cache
+        uses: actions/cache@v3
+        id: cache-test
+        with:
+          path: build/
+          key: ${{ hashFiles('src/') }}
+
       - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn
 
       - name: Lint
+        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn lint
 
   deploy:
