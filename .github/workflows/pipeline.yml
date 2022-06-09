@@ -13,6 +13,11 @@ jobs:
 
       - name: Build
         run: yarn build
+        
+      - uses: actions/upload-artifact@v3
+        with:
+          name: my-artifact
+          path: build/
 
   run_tests:
     runs-on: ubuntu-latest
@@ -29,7 +34,7 @@ jobs:
   run_lint:
     runs-on: ubuntu-latest
     steps:
-    
+
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -46,7 +51,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
-          name: build
+          name: my-artifact
           path: build/
       
       - name: Install Netlify cli
@@ -55,7 +60,7 @@ jobs:
 
       - name: Deploy to netlify
         run: |
-          netlify deploy --dir=prod --prod
+          netlify deploy --dir=build --prod
         env:
           NETLIFY_SITE_ID: ${{ secrets.TEAM_5_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
