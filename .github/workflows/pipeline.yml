@@ -47,11 +47,11 @@ jobs:
           key: ${{ hashFiles('src/') }}
 
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache-test.outputs.cache-hit != 'true'
         run: yarn
 
       - name: Run tests
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache-test.outputs.cache-hit != 'true'
         run: yarn test
 
   run_lint:
@@ -62,17 +62,17 @@ jobs:
 
       - name: Cache
         uses: actions/cache@v3
-        id: cache-test
+        id: cache-lint
         with:
           path: build/
           key: ${{ hashFiles('src/') }}
 
       - name: Install dependencies
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache-lint.outputs.cache-hit != 'true'
         run: yarn
 
       - name: Lint
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache-lint.outputs.cache-hit != 'true'
         run: yarn lint
 
   deploy:
