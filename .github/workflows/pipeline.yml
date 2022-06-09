@@ -50,8 +50,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
-          name: build_linux
-          path: build/
+          name: build
 
       - name: Install Netlify cli
         run: |
