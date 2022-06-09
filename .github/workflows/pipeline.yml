@@ -67,13 +67,11 @@ jobs:
           name: build
           path: build/
       
-      - name: Install Netlify cli
-        run: |
-          npm install netlify-cli@10.1.0 -g
-
       - name: Deploy to netlify
-        run: |
-          netlify deploy --dir=build --prod
+        uses: netlify/actions/cli@master
         env:
           NETLIFY_SITE_ID: ${{ secrets.TEAM_2_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        with:
+          args: deploy --dir=build --prod
+          secrets: '["NETLIFY_AUTH_TOKEN", NETLIFY_SITE_ID"]'
