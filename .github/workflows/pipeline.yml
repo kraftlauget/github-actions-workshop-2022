@@ -40,7 +40,7 @@ jobs:
         run: |
           npm install netlify-cli@10.1.0 -g
 
-      - name: Deploy to netlify
+      - name: Deploy to netlify2
         run: |
           netlify deploy --dir=build --prod
         env:
