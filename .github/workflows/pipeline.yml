@@ -39,7 +39,6 @@ jobs:
 
 
   run_tests:
-    needs: [build_linux]
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -55,7 +54,6 @@ jobs:
         run: yarn test
 
   run_lint:
-    needs: [build_linux]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -83,7 +81,7 @@ jobs:
 
       - name: Deploy to netlify
         run: |
-          netlify deploy --dir=prod --prod
+          netlify deploy --dir=build --prod
         env:
           NETLIFY_SITE_ID: ${{ secrets.TEAM_1_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
