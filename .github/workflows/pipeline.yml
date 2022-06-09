@@ -1,6 +1,7 @@
 name: "pipeline"
 on: push
 
+jobs:
   build_macos:
     runs-on: macos-latest
     steps:
@@ -34,7 +35,7 @@ on: push
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: mac-build
+          name: linux-build
           path: build/
 
   run_tests:
@@ -57,7 +58,6 @@ on: push
     needs: [build_linux]
     runs-on: ubuntu-latest
     steps:
-
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
