@@ -2,41 +2,47 @@ name: "pipeline"
 on: push
 
 jobs:
-  build_windows:
-    runs-on: windows-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Install
-        run: yarn install
-
-      - name: Build
-        run: yarn build
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: win-build
-          path: build/
-
-  build_macos:
-    runs-on: macos-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Install
-        run: yarn install
-
-      - name: Build
-        run: yarn build
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: mac-build
-          path: build/
+#  build_windows:
+#    runs-on: windows-latest
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v3
+#
+#      - name: Install
+#        run: yarn install
+#
+#      - name: Build
+#        run: yarn build
+#
+#      - name: Run tests
+#        run: yarn test
+#
+#      - name: Upload artifacts
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: win-build
+#          path: build/
+#
+#  build_macos:
+#    runs-on: macos-latest
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v3
+#
+#      - name: Install
+#        run: yarn install
+#
+#      - name: Build
+#        run: yarn build
+#
+#      - name: Run tests
+#        run: yarn test
+#
+#      - name: Upload artifacts
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: mac-build
+#          path: build/
 
   build_linux:
     runs-on: ubuntu-latest
@@ -45,29 +51,16 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install
-        run: yarn install
+        run: yarn install && yarn build
 
-      - name: Build
-        run: yarn build
-
-  run_tests:
-    needs: [build_windows, build_macos, build_linux]
-    strategy:
-      matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Install dependencies
-        run: yarn
+#      - name: Build
+#        run: yarn build
 
       - name: Run tests
         run: yarn test
 
   run_lint:
-    needs: [build_windows, build_macos, build_linux]
+    needs: [build_linux]
     runs-on: ubuntu-latest
     steps:
 
@@ -78,7 +71,7 @@ jobs:
         run: yarn lint
 
   deploy:
-    needs: [build_windows, build_macos, build_linux, run_tests, run_lint]
+    needs: [run_lint]
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
