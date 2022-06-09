@@ -33,6 +33,9 @@ jobs:
           name: build
           path: build/
 
+      - name: Install
+        run: yarn
+
       - name: Run tests
         run: yarn test
 
@@ -45,6 +48,9 @@ jobs:
         with:
           name: build
           path: build/
+
+      - name: Install
+        run: yarn
 
       - name: Lint
         run: yarn lint
