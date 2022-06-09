@@ -8,17 +8,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
       - name: Cache dependencies
         id: cache
         uses: actions/cache@v3
         with:
-          path: ~/.npm
-          key: npm-${{ hashFiles('yarn.lock') }}
-          restore-keys: npm-
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
-      - name: Install
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn
+      - name: Install project dependencies
+        run: yarn --prefer-offline
 
       - name: Build
         run: yarn build
@@ -34,17 +38,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
       - name: Cache dependencies
         id: cache
         uses: actions/cache@v3
         with:
-          path: ~/.npm
-          key: npm-${{ hashFiles('yarn.lock') }}
-          restore-keys: npm-
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
-      - name: Install
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn
+      - name: Install project dependencies
+        run: yarn --prefer-offline
 
       - name: Run tests
         run: yarn test
@@ -56,17 +64,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
       - name: Cache dependencies
         id: cache
         uses: actions/cache@v3
         with:
-          path: ~/.npm
-          key: npm-${{ hashFiles('yarn.lock') }}
-          restore-keys: npm-
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
-      - name: Install
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: yarn
+      - name: Install project dependencies
+        run: yarn --prefer-offline
 
       - name: Lint
         run: yarn lint
@@ -80,8 +92,17 @@ jobs:
         with:
           name: my-artifact
           path: build/
-      
+          
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: netlify-cli
+          restore-keys: netlify-cli-
+
       - name: Install Netlify cli
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
           npm install netlify-cli@10.1.0 -g
 
