@@ -59,19 +59,11 @@ jobs:
       - name: Run tests
         run: yarn test
 
-  run_lint:
-    needs: [build_linux]
-    runs-on: ubuntu-latest
-    steps:
-
-      - name: Install dependencies
-        run: yarn
-
       - name: Lint
         run: yarn lint
 
   deploy:
-    needs: [run_lint]
+    needs: [build_linux]
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
