@@ -31,6 +31,13 @@ jobs:
       - name: Build
         run: yarn build
 
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: linux-build
+          path: build/
+
+
   run_tests:
     needs: [build_linux]
     strategy:
@@ -51,6 +58,8 @@ jobs:
     needs: [build_linux]
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Install dependencies
         run: yarn
