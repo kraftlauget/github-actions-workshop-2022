@@ -19,6 +19,12 @@ jobs:
 
       - name: Build
         run: yarn build
+        
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: build/
 
   deploy:
     needs: [build_lint_test_linux]
