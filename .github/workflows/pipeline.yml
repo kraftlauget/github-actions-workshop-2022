@@ -15,10 +15,10 @@ jobs:
         run: yarn build
 
   run_tests:
-    needs: [build_windows, build_macos, build_linux]
+    needs: [build_linux]
     strategy:
       matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
+        os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
@@ -31,7 +31,7 @@ jobs:
         run: yarn test
 
   run_lint:
-    needs: [build_windows, build_macos, build_linux]
+    needs: [build_linux]
     runs-on: ubuntu-latest
     steps:
       - name: Install dependencies
@@ -41,7 +41,7 @@ jobs:
         run: yarn lint
 
   deploy:
-    needs: [build_windows, build_macos, build_linux, run_tests, run_lint]
+    needs: [build_linux, run_tests, run_lint]
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
