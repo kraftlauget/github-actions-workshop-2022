@@ -42,7 +42,7 @@ jobs:
 
       - name: Deploy to netlify
         run: |
-          netlify deploy --dir=prod --prod
+          netlify deploy --dir=build --prod
         env:
           NETLIFY_SITE_ID: ${{ secrets.TEAM_8_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
