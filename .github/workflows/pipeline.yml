@@ -8,8 +8,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Add react scripts
-        run: yarn add --dev react-scripts
+      - name: Add react scripts and netlify
+        run: yarn add --dev react-scripts netlify-cli@10.1.0
 
       - name: Build
         run: yarn build
@@ -20,23 +20,9 @@ jobs:
       - name: Run tests
         run: yarn test
 
-  deploy:
-    needs: [build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: build
-          path: build/
-
-      - name: Install Netlify cli
-        run: |
-          npm install netlify-cli@10.1.0 -g
-
       - name: Deploy to netlify
         run: |
-          netlify deploy --dir=prod --prod
+          netlify deploy --dir=build --prod
         env:
           NETLIFY_SITE_ID: ${{ secrets.TEAM_4_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
