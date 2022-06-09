@@ -2,7 +2,7 @@ name: "pipeline"
 on: push
 
 jobs:
-  build_linux:
+  build_lint_linux:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -18,10 +18,10 @@ jobs:
         run: yarn build
 
   run_tests:
-    needs: [build_linux]
+    needs: [build_lint_linux]
     strategy:
       matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
+        os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
@@ -34,7 +34,7 @@ jobs:
         run: yarn test
 
   deploy:
-    needs: [build_linux, run_tests]
+    needs: [build_lint_linux, run_tests]
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
